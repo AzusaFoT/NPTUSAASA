@@ -46,3 +46,18 @@ df = pd.read_csv(StringIO(response.content.decode('utf-8-sig')))
 
 # h2_value = df.iloc[0, 0]
 # print(f"{h2_value}")
+
+def get_all_data():
+    # 通過請求獲取 CSV 數據
+    response = requests.get(sheet_url)
+    # 將二進制數據解碼為文字，並轉換為 DataFrame
+    df = pd.read_csv(StringIO(response.content.decode('utf-8-sig')))
+    return df
+    
+def get_restaurant_data():
+    # 通過請求獲取 CSV 數據
+    response = requests.get(sheet_url_restaurant)
+    # 將二進制數據解碼為文字，並轉換為 DataFrame
+    df = pd.read_csv(StringIO(response.content.decode('utf-8-sig')))
+    return df
+

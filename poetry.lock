@@ -309,6 +309,32 @@ files = [
 ]
 
 [[package]]
+name = "data"
+version = "0.4"
+description = "Work with unicode/non-unicode data from files or strings uniformly."
+optional = false
+python-versions = "*"
+files = [
+    {file = "data-0.4.tar.gz", hash = "sha256:2726a65da1af31e2345b6bba81ae4cee87dddf17f7c62f5c63ba7327a8480667"},
+]
+
+[package.dependencies]
+decorator = "*"
+funcsigs = "*"
+six = "*"
+
+[[package]]
+name = "decorator"
+version = "5.1.1"
+description = "Decorators for Humans"
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "decorator-5.1.1-py3-none-any.whl", hash = "sha256:b8c3f85900b9dc423225913c5aace94729fe1fa9763b38939a95226f02d37186"},
+    {file = "decorator-5.1.1.tar.gz", hash = "sha256:637996211036b6385ef91435e4fae22989472f9d571faba8927ba8253acbc330"},
+]
+
+[[package]]
 name = "deprecated"
 version = "1.2.14"
 description = "Python @deprecated decorator to deprecate old python classes, functions or methods."
@@ -415,6 +441,17 @@ files = [
     {file = "frozenlist-1.4.0-cp39-cp39-win32.whl", hash = "sha256:19488c57c12d4e8095a922f328df3f179c820c212940a498623ed39160bc3c2f"},
     {file = "frozenlist-1.4.0-cp39-cp39-win_amd64.whl", hash = "sha256:6221d84d463fb110bdd7619b69cb43878a11d51cbb9394ae3105d082d5199167"},
     {file = "frozenlist-1.4.0.tar.gz", hash = "sha256:09163bdf0b2907454042edb19f887c6d33806adc71fbd54afc14908bfdc22251"},
+]
+
+[[package]]
+name = "funcsigs"
+version = "1.0.2"
+description = "Python function signatures from PEP362 for Python 2.6, 2.7 and 3.2+"
+optional = false
+python-versions = "*"
+files = [
+    {file = "funcsigs-1.0.2-py2.py3-none-any.whl", hash = "sha256:330cc27ccbf7f1e992e69fef78261dc7c6569012cf397db8d3de0234e6c937ca"},
+    {file = "funcsigs-1.0.2.tar.gz", hash = "sha256:a7bb0f2cf3a3fd1ab2732cb49eba4252c2af4240442415b4abce3b87022a8f50"},
 ]
 
 [[package]]
@@ -1181,4 +1218,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10.0,<3.11"
-content-hash = "1b0f1c67d8b55e4e5dd78ea0e16ae9ee71e21b3e90c3408d4bd0c1ebea3f5067"
+content-hash = "384d1455ee41747219fb824632df61f65de8544d91126e6573a0a98dc52d849f"

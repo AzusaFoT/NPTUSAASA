@@ -11,6 +11,7 @@ from linebot.models import (
 )
 
 import os
+from msgDeal.py import *
 
 app = Flask(__name__)
 
@@ -45,9 +46,11 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    # 接收到訊息
     user_text = event.message.text
 
-    if user_text.startswith("HI!"):
+    #這邊是可以做字串處理
+    if user_text.startswith("這是不可能的"):
         reply_text = greetingMSG
     else:
         # 如果開頭不是"HI!"，不做回應
