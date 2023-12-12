@@ -17,7 +17,7 @@ sheet_url_entertainment = config['API']['SHEET_URL_ENTERTAINMENT']
 sheet_url_garage = config['API']['SHEET_URL_GARAGE']
 
 # 通過請求獲取 CSV 數據
-response = requests.get(sheet_url)
+response = requests.get(sheet_url_restaurant)
 # 將二進制數據解碼為文字，並轉換為 DataFrame
 df = pd.read_csv(StringIO(response.content.decode('utf-8-sig')))
 
@@ -25,6 +25,15 @@ df = pd.read_csv(StringIO(response.content.decode('utf-8-sig')))
 # output_path = os.path.join("path", "filename.csv")
 # df.to_csv(output_path, encoding='utf-8-sig', index=False)
 
-# 得到H2
-# h2_value = df.iloc[1, 7]
-# print(f"H2 是：{h2_value}")
+# 得到各筆資料
+# df.iloc[r, 0]是編號
+# df.iloc[r, 1]是特約店名
+# df.iloc[r, 2]是到期日
+# df.iloc[r, 3]是特約內容
+# df.iloc[r, 4]是營業時間
+# df.iloc[r, 5]是地址
+# df.iloc[r, 6]是連絡電話
+# df.iloc[r, 7]是外送平台
+
+# h2_value = df.iloc[0, 0]
+# print(f"{h2_value}")
