@@ -25,7 +25,7 @@ print(df)
 
 print(hi)
 
-
+print(df)
 #def find_prd_name():
-#    for items in len(df)：
+#    for items in range(len(df))：
   
