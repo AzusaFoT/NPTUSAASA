@@ -1,39 +1,60 @@
+from flask import Flask, request, abort
+
+from linebot import (LineBotApi, WebhookHandler)
+
+from linebot.exceptions import (InvalidSignatureError)
+
+from linebot.models import (
+    MessageEvent,
+    TextMessage,
+    TextSendMessage,
+)
+
 import os
-import pandas as pd
-from io import StringIO
-import requests
-import configparser
 
-config = configparser.ConfigParser()
-config.read('config.ini')
-# Google Sheets 的 "僅供檢視" 連結
-sheet_url = config['API']['SHEET_URL_ALL']
-sheet_url_restaurant = config['API']['SHEET_URL_RESTAURANT']
-sheet_url_brunch = config['API']['SHEET_URL_BRUNCH']
-sheet_url_drink = config['API']['SHEET_URL_DRINK']
-sheet_url_snack = config['API']['SHEET_URL_SNACK']
-sheet_url_iceshop = config['API']['SHEET_URL_ICESHOP']
-sheet_url_entertainment = config['API']['SHEET_URL_ENTERTAINMENT']
-sheet_url_garage = config['API']['SHEET_URL_GARAGE']
+app = Flask(__name__)
 
-# 通過請求獲取 CSV 數據
-response = requests.get(sheet_url_restaurant)
-# 將二進制數據解碼為文字，並轉換為 DataFrame
-df = pd.read_csv(StringIO(response.content.decode('utf-8-sig')))
+token = os.environ.get("LINE_CHANNEL_ACCESS_TOKEN")
+secret = os.environ.get("LINE_CHANNEL_SECRET")
+line_bot_api = LineBotApi(token)
+handler = WebhookHandler(secret)
 
-# 指定絕對路徑以 utf-8-sig 編碼保存為 CSV 文件，並加入 BOM
-# output_path = os.path.join("path", "filename.csv")
-# df.to_csv(output_path, encoding='utf-8-sig', index=False)
+#打招呼
+greetingMSG = "HI!"
 
-# 得到各筆資料
-# df.iloc[r, 0]是編號
-# df.iloc[r, 1]是特約店名
-# df.iloc[r, 2]是到期日
-# df.iloc[r, 3]是特約內容
-# df.iloc[r, 4]是營業時間
-# df.iloc[r, 5]是地址
-# df.iloc[r, 6]是連絡電話
-# df.iloc[r, 7]是外送平台
+def reply_to_user(event, reply_text):
+    line_bot_api.reply_message(event.reply_token,TextSendMessage(text=reply_text))
 
-# h2_value = df.iloc[0, 0]
-# print(f"{h2_value}")
+
+@app.route('/callback', methods=['POST'])
+def callback():
+    signature = request.headers['X-Line-Signature']
+    body = request.get_data(as_text=True)
+    app.logger.info("Request body: " + body)
+
+    try:
+        handler.handle(body, signature)
+    except InvalidSignatureError:
+        print(
+            "Invalid signature. Please check your channel access token/channel secret."
+        )
+        abort(400)
+
+    return 'OK'
+
+
+@handler.add(MessageEvent, message=TextMessage)
+def handle_message(event):
+    user_text = event.message.text
+
+    if user_text.startswith("HI!"):
+        reply_text = greetingMSG
+    else:
+        # 如果開頭不是"HI!"，不做回應
+        return
+
+    # 使用函數回覆用戶
+    reply_to_user(event, reply_text)
+
+
+app.run(host='0.0.0.0', port=8080)
