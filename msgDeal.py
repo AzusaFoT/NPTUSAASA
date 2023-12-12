@@ -14,6 +14,7 @@ from data import *
 
 #1223
 df = get_restaurant_data()
+print(df)
 
 # for i in range(次數):
 #     縮排
@@ -22,6 +23,7 @@ df = get_restaurant_data()
 # for i in list1:
 #     print(i) ##這裡會直接拿取'list1裡面的東西'
 
+print(hi)
 
 
 #def find_prd_name():
