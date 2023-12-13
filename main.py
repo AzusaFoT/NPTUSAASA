@@ -10,6 +10,8 @@ import os
 from msgDeal import *
 from data import *
 from bubbleMSGGenerator import *
+from keepAlive import keep_alive
+from stringData import *
 
 app = Flask(__name__)
 
@@ -18,19 +20,26 @@ secret = os.environ.get("LINE_CHANNEL_SECRET")
 line_bot_api = LineBotApi(token)
 handler = WebhookHandler(secret)
 
-#打招呼
-greetingMSG = "HI!"
-
 
 def reply_to_user(event, reply_text, i):
+    #一般回覆為1，會告知文字消息
     if i == 1:
+        if isinstance(reply_text, str) and reply_text == "無特約店家":
+            reply_text += noPRDGreetingMSG
         line_bot_api.reply_message(event.reply_token,
                                    TextSendMessage(text=reply_text))
+    #特殊回覆為2，會構成用大泡泡去寫的json
     elif i == 2:
-        line_bot_api.reply_message(
-            event.reply_token,
-            FlexSendMessage(alt_text="Shop Information",
-                            contents=reply_text))
+        # 假設吃到是msg == 無特約店家 轉介回去1然後return
+        if isinstance(reply_text, str) and reply_text == "無特約店家":
+            reply_to_user(event, reply_text, 1)
+            return
+        # 假設msg有東西，正常去執行
+        else:
+            line_bot_api.reply_message(
+                event.reply_token,
+                FlexSendMessage(alt_text="Shop Information",
+                                contents=reply_text))
 
 
 @app.route('/callback', methods=['POST'])
@@ -57,22 +66,22 @@ def handle_message(event):
 
     #這邊是可以做字串處理
     if user_text.startswith("查詢"):
-        reply_text = selectshop(user_text)
+        print(1)
+        reply_text = create_carousel(selectshop(user_text))
         reply_to_user(event, reply_text, 2)
-        return
+        return  #如果有回覆訊息就要return
     elif "推薦" in user_text:
+        print(2)
         reply_text = create_carousel(recommend_prd())
         print(reply_text)
         reply_to_user(event, reply_text, 2)
+        return  #如果有回覆訊息就要return
     elif "請問" in user_text:
-        reply_text = "機器人無法回覆該問題，歡迎洽學生會公關部IG將會有小編回復\n學生會公關部IG：@nptusa_prd\nhttps://www.instagram.com/nptusa_prd/"
-    elif "可以簽" or "能簽" in user_text:
-        reply_text = "感謝你的建議\n我只是機器人，若有想簽的特約可以到學生會公關部IG反映呦!\n學生會公關部IG：@nptusa_prd\nhttps://www.instagram.com/nptusa_prd/"
-
+        reply_text = cannotReplyMSG
+    elif "可以簽" in user_text or "能簽" in user_text:
+        reply_text = gratitudeMSG
     else:
-        # 如果開頭不是"HI!"，不做回應
-        reply_text = "哈囉!\我是特約小祕書😉\n\n可以輸入 查詢XXX 來搜尋!\n  - 例如：- 查詢 義朵朵\n- 查詢 自由路\n或是輸入 推薦特約給我 "
-        return
+        reply_text = greetingMSG
 
     # 使用函數回覆用戶
     reply_to_user(event, reply_text, 1)

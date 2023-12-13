@@ -1,30 +1,34 @@
+import random
 import urllib.parse
 from linebot.models import (MessageEvent, TextMessage, TextSendMessage,
                             FlexSendMessage, BubbleContainer, BoxComponent,
                             TextComponent, ButtonComponent, URIAction,
                             IconComponent, CarouselContainer)
+from stringData import *
 
 
 # 將氣泡放入 CarouselContainer 中
 def create_carousel(a):
-    return CarouselContainer(contents=[a[0], a[1], a[2]])
+    if len(a) > 12:
+        a = random.sample(a, 12)
+    # 假設 a 是一個包含多個 CarouselColumn 的列表
+    return CarouselContainer(contents=a)
 
+
+def handle_null_values(value):
+    noinfo = "無提供，試著Google看看吧!"
+    nullV = [None, 'NaN', 'nan']  # 定義可能的空值
+    return str(value) if value not in nullV else noinfo
 
 # 單個按鈕構建 BubbleContainer
 def create_bubble(store_name, special_content, business_hours, address,
                   phone_number):
     # 將可能的特殊值替換為空字符串
-    store_name = str(store_name) if store_name not in ['NaN', 'nan'
-                                                       ] else '去google!'
-    special_content = str(special_content) if special_content not in [
-        'NaN', 'nan'
-    ] else '去google!'
-    business_hours = str(business_hours) if business_hours not in [
-        'NaN', 'nan'
-    ] else '去google!'
-    address = str(address) if address not in ['NaN', 'nan'] else '去google!'
-    phone_number = str(phone_number) if phone_number not in ['NaN', 'nan'
-                                                             ] else '去google!'
+    store_name = handle_null_values(store_name)
+    special_content = handle_null_values(special_content)
+    business_hours = handle_null_values(business_hours)
+    address = handle_null_values(address)
+    phone_number = handle_null_values(phone_number)
     return BubbleContainer(
         hero={
             "type": "image",
