@@ -47,13 +47,15 @@ df = pd.read_csv(StringIO(response.content.decode('utf-8-sig')))
 # h2_value = df.iloc[0, 0]
 # print(f"{h2_value}")
 
+
 def get_all_data():
     # 通過請求獲取 CSV 數據
     response = requests.get(sheet_url)
     # 將二進制數據解碼為文字，並轉換為 DataFrame
     df = pd.read_csv(StringIO(response.content.decode('utf-8-sig')))
     return df
-    
+
+
 def get_restaurant_data():
     # 通過請求獲取 CSV 數據
     response = requests.get(sheet_url_restaurant)
@@ -61,3 +63,50 @@ def get_restaurant_data():
     df = pd.read_csv(StringIO(response.content.decode('utf-8-sig')))
     return df
 
+
+def get_brunch_data():
+    # 通過請求獲取 CSV 數據
+    response = requests.get(sheet_url_brunch)
+    # 將二進制數據解碼為文字，並轉換為 DataFrame
+    df = pd.read_csv(StringIO(response.content.decode('utf-8-sig')))
+    return df
+
+
+def get_drink_data():
+    # 通過請求獲取 CSV 數據
+    response = requests.get(sheet_url_drink)
+    # 將二進制數據解碼為文字，並轉換為 DataFrame
+    df = pd.read_csv(StringIO(response.content.decode('utf-8-sig')))
+    return df
+
+
+def get_snack_data():
+    # 通過請求獲取 CSV 數據
+    response = requests.get(sheet_url_snack)
+    # 將二進制數據解碼為文字，並轉換為 DataFrame
+    df = pd.read_csv(StringIO(response.content.decode('utf-8-sig')))
+    return df
+
+
+def get_iceshop_data():
+    # 通過請求獲取 CSV 數據
+    response = requests.get(sheet_url_iceshop)
+    # 將二進制數據解碼為文字，並轉換為 DataFrame
+    df = pd.read_csv(StringIO(response.content.decode('utf-8-sig')))
+    return df
+
+
+def get_entertainment_data():
+    # 通過請求獲取 CSV 數據
+    response = requests.get(sheet_url_entertainment)
+    # 將二進制數據解碼為文字，並轉換為 DataFrame
+    df = pd.read_csv(StringIO(response.content.decode('utf-8-sig')))
+    return df
+
+
+def get_garage_data():
+    # 通過請求獲取 CSV 數據
+    response = requests.get(sheet_url_garage)
+    # 將二進制數據解碼為文字，並轉換為 DataFrame
+    df = pd.read_csv(StringIO(response.content.decode('utf-8-sig')))
+    return df

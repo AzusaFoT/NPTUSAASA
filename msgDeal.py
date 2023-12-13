@@ -1,4 +1,7 @@
+from numpy import nan
 from data import *
+from bubbleMSGGenerator import *
+import random
 
 # get_restaurant_data() 得到 吃的 df
 
@@ -12,9 +15,7 @@ from data import *
 # df.iloc[r, 6]是連絡電話
 # df.iloc[r, 7]是外送平台
 
-#1223
-df = get_restaurant_data()
-print(df)
+#df = get_restaurant_data()
 
 # for i in range(次數):
 #     縮排
@@ -23,9 +24,147 @@ print(df)
 # for i in list1:
 #     print(i) ##這裡會直接拿取'list1裡面的東西'
 
-print(hi)
+print(len(df))
+# 創建 Flex Message
 
-print(df)
-#def find_prd_name():
-#    for items in range(len(df))：
-  
+
+def find_prd_name(prd_name):
+    df = get_all_data()
+    exist = False
+    msg = ""
+    prd_name = str(prd_name)
+    prd_name = prd_name.replace("查詢", "")
+    prd_name = prd_name.replace("推薦", "")
+    prd_name = prd_name.replace(" ", "")
+    for items in range(0, len(df)):
+        if (str(df.iloc[items, 1]) in prd_name) or (prd_name in str(
+                df.iloc[items, 1])):
+            exist = True
+            open_time = df.iloc[items, 4].replace("\n", "\n\t\t")
+            if str(df.iloc[items, 3]) == "nan":
+                df.iloc[items, 3] = df.iloc[items - 1, 3]
+            msg += str(df.iloc[items, 1]) + "\n特約內容：" + str(
+                df.iloc[items, 3]) + "\n營業時間：\n\t" + open_time + "\n地址：" + str(
+                    df.iloc[items, 5]) + "\n連絡電話：" + str(df.iloc[items,
+                                                                 6]) + "\n\n"
+    if exist:
+        return msg
+    else:
+        #msg = "此店家無特約"
+        find_prd_address(prd_name)
+        return msg
+
+
+def find_prd_address(prd_name):
+    df = get_all_data()
+    exist = False
+    msg = ""
+    prd_name = str(prd_name)
+    prd_name = prd_name.replace("查詢", "")
+    prd_name = prd_name.replace(" ", "")
+    for items in range(0, len(df)):
+        if (str(df.iloc[items, 5]) in prd_name) or (prd_name in str(
+                df.iloc[items, 5])):
+            exist = True
+            open_time = df.iloc[items, 4].replace("\n", "\n\t\t")
+            if str(df.iloc[items, 3]) == "nan":
+                df.iloc[items, 3] = df.iloc[items - 1, 3]
+            msg += str(df.iloc[items, 1]) + "\n特約內容：" + str(
+                df.iloc[items, 3]) + "\n營業時間：\n\t" + open_time + "\n地址：" + str(
+                    df.iloc[items, 5]) + "\n連絡電話：" + str(df.iloc[items,
+                                                                 6]) + "\n\n"
+    if exist:
+        return msg
+    else:
+        msg = "此店家無特約"
+        return msg
+
+
+def selectRoad(prd_name):
+    df = get_all_data()
+    exist = False
+    msg = ""
+    prd_name = str(prd_name)
+    prd_name = prd_name.replace("查詢", "")
+    prd_name = prd_name.replace(" ", "")
+    for items in range(0, len(df)):
+        if (str(df.iloc[items, 5]) in prd_name) or (prd_name in str(
+                df.iloc[items, 5])):
+            exist = True
+            open_time = df.iloc[items, 4].replace("\n", "\n\t\t")
+            if str(df.iloc[items, 3]) == "nan":
+                df.iloc[items, 3] = df.iloc[items - 1, 3]
+            # create_bubble(商店名稱,特約內容,時間,地址,電話)
+            msg = create_bubble(str(df.iloc[items, 1]), str(df.iloc[items, 3]),
+                                str(open_time), str(df.iloc[items, 5]),
+                                str(df.iloc[items, 6]))
+        if exist:
+            return msg
+    else:
+        msg = "此店家無特約"
+        return msg
+
+
+print(find_prd_address("自由路"))
+
+
+def selectshop(prd_name):
+    df = get_all_data()
+    exist = False
+    msg = ""
+    prd_name = str(prd_name)
+    prd_name = prd_name.replace("查詢", "")
+    prd_name = prd_name.replace(" ", "")
+    for items in range(0, len(df)):
+        if (str(df.iloc[items, 1]) in prd_name) or (prd_name in str(
+                df.iloc[items, 1])):
+            exist = True
+            if str(df.iloc[items, 3]) == "nan":
+                df.iloc[items, 3] = df.iloc[items - 1, 3]
+            open_time = df.iloc[items, 4].replace("\n", "\n\t")
+            # create_bubble(商店名稱,特約內容,時間,地址,電話)
+            msg = create_bubble(str(df.iloc[items, 1]), str(df.iloc[items, 3]),
+                                str(open_time), str(df.iloc[items, 5]),
+                                str(df.iloc[items, 6]))
+        if exist:
+            return msg
+    else:
+        msg = selectRoad(prd_name)
+        return msg
+
+
+# 隨機推薦特約
+def recommend_prd():
+    df = get_all_data()
+    msg = ""
+    # for items in range(0,3):
+    #     random_prd1=random.randint(0,len(df))
+    #     find_prd_name(df.iloc[random_prd1, 1])
+    #     open_time = df.iloc[random_prd1, 4].replace("\n", "\n\t\t")
+    #     msg+=str(df.iloc[random_prd1, 1]) + "\n特約內容：" + str(df.iloc[random_prd1, 3]) + "\n營業時間：\n\t" + open_time + "\n地址：" + str(df.iloc[random_prd1, 5]) + "\n連絡電話：" + str(df.iloc[random_prd1,6])
+    #     if items != 3:
+    #         msg+= "\n\n"
+    carousel_contents = []
+    for item in range(3):
+        random_prd1 = random.randint(0, len(df))
+        x = str(df.iloc[random_prd1, 3])
+        if str(df.iloc[random_prd1, 3]) == "nan":
+            x = df.iloc[random_prd1 - 1, 3]
+        shop_msg = create_bubble(
+            str(df.iloc[random_prd1, 1]), x,
+            str(str(df.iloc[random_prd1, 4]).replace("\n", "\n\t")),
+            str(df.iloc[random_prd1, 5]), str(df.iloc[random_prd1, 6]))
+        carousel_contents.append(shop_msg)
+    msg = carousel_contents
+    # FlexSendMessage(
+    #     alt_text="This is a flex message",
+    #     contents={
+    #         "type": "carousel",
+    #         "contents": carousel_contents
+    #     }
+    # )
+    return msg
+
+
+print(selectshop("自由路"))
+#print()
