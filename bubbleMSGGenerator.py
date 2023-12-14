@@ -7,8 +7,11 @@ from linebot.models import (MessageEvent, TextMessage, TextSendMessage,
 from stringData import *
 from urllib.parse import quote
 
+
 # 將氣泡放入 CarouselContainer 中
 def create_carousel(a):
+    if a == "無特約店家":
+        return a
     if len(a) > 12:
         a = random.sample(a, 12)
     # 假設 a 是一個包含多個 CarouselColumn 的列表
@@ -19,6 +22,7 @@ def handle_null_values(value):
     noinfo = "無提供，試著Google看看吧!"
     nullV = [None, 'NaN', 'nan']  # 定義可能的空值
     return str(value) if value not in nullV else noinfo
+
 
 def urlMaker(content):
     content = str(content)

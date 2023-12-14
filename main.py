@@ -66,12 +66,10 @@ def handle_message(event):
 
     #這邊是可以做字串處理
     if user_text.startswith("查詢"):
-        print(1)
         reply_text = create_carousel(selectshop(user_text))
         reply_to_user(event, reply_text, 2)
         return  #如果有回覆訊息就要return
     elif "推薦" in user_text:
-        print(2)
         reply_text = create_carousel(recommend_prd())
         print(reply_text)
         reply_to_user(event, reply_text, 2)

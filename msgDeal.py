@@ -23,7 +23,7 @@ import random
 # list1 = ['1','2','3']
 # for i in list1:
 #     print(i) ##這裡會直接拿取'list1裡面的東西'
-
+df = get_all_data()
 print(len(df))
 # 創建 Flex Message
 
@@ -53,7 +53,7 @@ def find_prd_name(prd_name):
         return msg
     else:
         #msg = "此店家無特約"
-        find_prd_address(prd_name)
+        msg = find_prd_address(prd_name)
         return msg
 
 
@@ -84,7 +84,7 @@ def find_prd_address(prd_name):
         return msg
 
 
-print(find_prd_name("自由路"))
+# print(find_prd_name("自由路"))
 
 
 def selectRoad(prd_name):
@@ -99,7 +99,7 @@ def selectRoad(prd_name):
         if (str(df.iloc[items, 5]) in prd_name) or (prd_name in str(
                 df.iloc[items, 5])):
             exist = True
-            open_time = df.iloc[items, 4].replace("\n", "\n\t\t")
+            open_time = str(df.iloc[items, 4]).replace("\n", "\n\t\t")
             if (str(df.iloc[items, 4]) == "nan"):
                 open_time = "無提供，試著Google看看吧!"
             i = 1
@@ -116,7 +116,6 @@ def selectRoad(prd_name):
         msg = carousel_contents
         return msg
     else:
-        print(msg)
         msg = "無特約店家"
         return msg
 
@@ -160,9 +159,9 @@ def recommend_prd():
     msg = ""
     carousel_contents = []
     for item in range(3):
-        random_prd1 = random.randint(0, len(df)-1)
+        random_prd1 = random.randint(0, len(df) - 1)
         while (str(df.iloc[random_prd1, 1]) == "nan"):
-            random_prd1 = random.randint(0, len(df)-1)
+            random_prd1 = random.randint(0, len(df) - 1)
         x = str(df.iloc[random_prd1, 3])
         i = 1
         while (x == "nan"):
@@ -186,7 +185,7 @@ def handle_value(value):
         return '無提供，試著Google看看吧!'
 
 
-print(find_prd_name("咕嘰咕嘰"))
+print(selectshop("劉媽媽"))
 #print()
 
 # def recommend_prd():
