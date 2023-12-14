@@ -5,7 +5,7 @@ from linebot.models import (MessageEvent, TextMessage, TextSendMessage,
                             TextComponent, ButtonComponent, URIAction,
                             IconComponent, CarouselContainer)
 from stringData import *
-
+from urllib.parse import quote
 
 # 將氣泡放入 CarouselContainer 中
 def create_carousel(a):
@@ -19,6 +19,11 @@ def handle_null_values(value):
     noinfo = "無提供，試著Google看看吧!"
     nullV = [None, 'NaN', 'nan']  # 定義可能的空值
     return str(value) if value not in nullV else noinfo
+
+def urlMaker(content):
+    content = str(content)
+    return "https://www.google.com/search?q=" + quote(content)
+
 
 # 單個按鈕構建 BubbleContainer
 def create_bubble(store_name, special_content, business_hours, address,
@@ -39,7 +44,7 @@ def create_bubble(store_name, special_content, business_hours, address,
             "aspectMode": "cover",
             "action": {
                 "type": "uri",
-                "uri": "https://linktr.ee/nptusa_prd"
+                "uri": urlMaker(store_name)
             }
         },
         body=BoxComponent(
